@@ -1,6 +1,7 @@
 package com.twsz.opengl.render;
 
 import android.opengl.GLES20;
+import android.opengl.Matrix;
 import android.view.View;
 
 import java.nio.Buffer;
@@ -19,11 +20,13 @@ import javax.microedition.khronos.opengles.GL10;
 public class Square extends Shape {
     private final String vertexShaderCode   =
             "attribute vec4 vPosition;" +
+                    "uniform mat4 vMatrix;" +
                     "void main(){" +
-                    "gl_Position = vPosition;" +
+                    "gl_Position = vPosition *vMatrix;" +
                     "}";
     private final String fragmentShaderCode =
-            "uniform vec4 vColor;" +
+            "precision mediump float;" +
+                    "uniform vec4 vColor;" +
                     "void main(){" +
                     "gl_FragColor = vColor;" +
                     "}";
@@ -47,6 +50,11 @@ public class Square extends Shape {
     private Buffer mVertexBuffer;
     private int    mProgram;
     private Buffer indexBuffer;
+
+
+    private float[] mViewMatrix    = new float[16];
+    private float[] mProjectMatrix = new float[16];
+    private float[] mMVPMatrix     = new float[16];
 
     public Square(View view) {
         super(view);
@@ -76,12 +84,17 @@ public class Square extends Shape {
 
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
-
+        float ratio = (float) width / height;
+        Matrix.frustumM(mProjectMatrix, 0, -ratio, ratio, -1, 1, 3, 7);
+        Matrix.setLookAtM(mViewMatrix, 0, 0, 0, 7.0F, 0, 0, 0, 0, 1F, 0);
+        Matrix.multiplyMM(mMVPMatrix, 0, mProjectMatrix, 0, mViewMatrix, 0);
     }
 
     @Override
     public void onDrawFrame(GL10 gl) {
         GLES20.glUseProgram(mProgram);
+        int vMatrix         = GLES20.glGetUniformLocation(mProgram, "vMatrix");
+        GLES20.glUniformMatrix4fv(vMatrix,1,false,mMVPMatrix,0);
         int vPosition = GLES20.glGetAttribLocation(mProgram, "vPosition");
         GLES20.glEnableVertexAttribArray(vPosition);
         GLES20.glVertexAttribPointer(vPosition, COORDS_PER_VERTEX, GLES20.GL_FLOAT, false, vertexStride, mVertexBuffer);

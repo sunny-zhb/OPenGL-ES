@@ -17,7 +17,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 public class FGLRender extends Shape {
 
-    private Class<? extends Shape> clazz = TriangleColorFul.class;
+    private Class<? extends Shape> clazz = Oval.class;
 
     private Shape mShape;
 
@@ -38,7 +38,7 @@ public class FGLRender extends Shape {
             declaredConstructor.setAccessible(true);
             mShape = declaredConstructor.newInstance(mView);
         } catch (Exception e) {
-            mShape = new TriangleColorFul(mView);
+            mShape = new Oval(mView);
             e.printStackTrace();
         }
         mShape.onSurfaceCreated(gl, config);
