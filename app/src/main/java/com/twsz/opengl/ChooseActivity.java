@@ -17,6 +17,9 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.twsz.opengl.render.Cone;
+import com.twsz.opengl.render.Cube;
+import com.twsz.opengl.render.Cylinder;
 import com.twsz.opengl.render.Oval;
 import com.twsz.opengl.render.Square;
 import com.twsz.opengl.render.Triangle;
@@ -64,9 +67,9 @@ public class ChooseActivity extends AppCompatActivity {
         add("彩色三角形", TriangleColorFul.class);
         add("正方形", Square.class);
         add("圆形", Oval.class);
-//        add("正方体", Cube.class);
-//        add("圆锥", Cone.class);
-//        add("圆柱", Cylinder.class);
+        add("正方体", Cube.class);
+        add("圆锥", Cone.class);
+        add("圆柱", Cylinder.class);
 //        add("球体", Ball.class);
 //        add("带光源的球体",BallWithLight.class);
     }

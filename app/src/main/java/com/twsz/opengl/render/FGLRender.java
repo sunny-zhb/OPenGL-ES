@@ -17,7 +17,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 public class FGLRender extends Shape {
 
-    private Class<? extends Shape> clazz = Oval.class;
+    private Class<? extends Shape> clazz = Cone.class;
 
     private Shape mShape;
 
